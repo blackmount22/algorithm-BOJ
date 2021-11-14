@@ -17,8 +17,8 @@ public class BaekjoonAlgo_4963 {
 		
 		while(true){
 			cnt =0;
-			w = sc.nextInt();
 			h = sc.nextInt();
+			w = sc.nextInt();
 			
 			if(w == 0 && h== 0) {
 				for(int i=0;i<result.size();i++) {
@@ -55,6 +55,8 @@ public class BaekjoonAlgo_4963 {
 		int[] yy = {0, 1, 1, 1, 0, -1, -1, -1};
 		
 		visit[x][y] = 1;
+		
+		//System.out.println(x + "," + y);
 		
 		for(int i=0;i<8;i++) {
 			int ax = x + xx[i];
