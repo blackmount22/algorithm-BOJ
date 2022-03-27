@@ -1,0 +1,71 @@
+import java.util.Scanner;
+
+public class BaekjoonAlgo_1018 {
+	
+	static char[][] map;
+	static int min;
+	
+	static int result = 64;
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		Scanner sc = new Scanner(System.in);
+		
+		int n = sc.nextInt();
+		int m = sc.nextInt();
+		
+		map = new char[n][m];
+				
+		for(int i=0;i<n;i++) {
+			String str = sc.next();
+			
+			for(int j=0;j<m;j++) {
+				map[i][j] = str.charAt(j);
+			}
+		}
+		
+		int startN = n-7;
+		int startM = m-7;
+		
+		for(int i=0;i<startN;i++) {
+			for(int j=0;j<startM;j++) {
+				getCnt(i, j);
+			}
+		}
+		
+		System.out.println(result);
+		
+	}
+	
+	public static void getCnt(int x, int y) {
+		int end_x = x+8;
+		int end_y = y+8;
+		int cnt = 0; 
+		
+		char nextcolor = map[x][y]; 
+		
+		for(int i=x;i<end_x;i++) {
+			for(int j=y;j<end_x;j++) {
+				System.out.println("");
+				System.out.println(nextcolor);
+				System.out.println(map[i][j]);
+				if(nextcolor != map[i][j]) {
+					
+					System.out.println("?? : " + i + "," + j);
+					cnt++;
+				} 
+				
+				if(map[i][j] == 'B') {
+					nextcolor = 'W';
+				} else if(map[i][j] == 'W') {
+					nextcolor = 'B';
+				}
+			}
+		}
+		
+		cnt = Math.min(cnt, 64 - cnt);
+		result = Math.min(result, cnt);
+	}
+
+}
