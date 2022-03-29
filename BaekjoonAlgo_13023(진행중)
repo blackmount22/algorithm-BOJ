@@ -1,0 +1,74 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+
+	static int n;
+	static int m;
+	static int ar[][];
+	static int visit[];
+	static int deep = 0;
+	static Boolean isResult = false;
+	static ArrayList<Integer>[] list;
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		Scanner sc = new Scanner(System.in);
+		
+		n = sc.nextInt();
+		m = sc.nextInt();
+		visit = new int[n];
+		ar = new int[n][n];
+		list = new ArrayList[n];
+		
+//		for(int i =0;i<n;i++) {
+//			list[i] = new ArrayList<>();
+//		}
+		
+		for(int i=0;i<m;i++) {
+			int x = sc.nextInt();
+			int y = sc.nextInt();
+			
+//			list[x].add(y);
+//			list[y].add(x);
+			
+			ar[x][y] = 1;
+			ar[y][x] = 1;
+			
+		}
+		
+		for(int i=0;i<n;i++) {
+			getDFS(i, 0);
+		}
+		
+		System.out.println(0);
+	}
+	
+	public static void getDFS(int node, int len) {
+		if(len == 4) {
+			System.out.println(1);
+			System.exit(0);
+		}
+		
+		visit[node] = 1;
+		
+		for(int i=0;i<n;i++) {
+			if(visit[i] == 0 && ar[node][i] == 1) {
+				getDFS(i, len + 1);
+				visit[i] = 0;
+			}
+		}
+		
+//		for(int i=0;i<n;i++) {
+//			int temp = list[node].get(i);
+//			if(visit[temp] == 0) {
+//				visit[temp] = 1;
+//				getDFS(temp, len + 1);
+//				visit[temp] = 0;
+//			}
+//		}
+		
+	}
+
+}
