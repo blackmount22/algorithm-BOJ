@@ -1,0 +1,93 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+import java.util.concurrent.LinkedBlockingDeque;
+
+class Location17086{
+	int x;
+	int y;
+	
+	public Location17086(int x, int y) {
+		// TODO Auto-generated constructor stub
+		this.x = x;
+		this.y = y;
+	}
+}
+
+public class BaekjoonAlgo_17086 {
+
+	static int n;
+	static int m;
+	static int[][] map;
+	static int[][] visit;
+	static int totalMax = 0; 
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		Scanner sc = new Scanner(System.in);
+		
+		n = sc.nextInt();
+		m = sc.nextInt();
+		
+		map = new int[n][m];
+		visit = new int[n][m];
+		
+		for(int i=0;i<n;i++) {
+			for(int j=0;j<m;j++) {
+				map[i][j] = sc.nextInt();
+			}
+		}
+		
+		for(int i=0;i<n;i++) {
+			for(int j=0;j<m;j++) {
+				if(map[i][j] == 0) {
+					GetBFS(i, j);					
+				}
+			}
+		}
+		
+		System.out.println(totalMax);
+	}
+	
+	public static void GetBFS(int x, int y) {
+		int max = 0;
+		int[] xx = {-1, -1, 0, 1, 1, 1, 0, -1};
+		int[] yy = {0, 1, 1, 1, 0, -1, -1, -1};
+		
+		visit = new int[n][m];
+		Queue<Location17086> q = new LinkedList<>();
+		
+		q.add(new Location17086(x, y));
+		visit[x][y] = 1;
+		
+		while(!q.isEmpty()) {
+			
+			int size = q.size();
+			
+			for(int s=0;s<size;s++) {
+				int curX = q.peek().x;
+				int curY = q.poll().y;
+				
+				if(map[curX][curY] == 1) {
+					totalMax = Math.max(max, totalMax);
+					return;
+				}
+				
+				for(int i=0;i<8;i++) {
+					int ax = curX + xx[i];
+					int ay = curY + yy[i];
+					
+					if(ax >=0 && ay>=0 && ax<n && ay<m && visit[ax][ay] == 0) {
+						q.add(new Location17086(ax, ay));
+						visit[ax][ay] = 1;
+					}
+				}
+			}
+			
+			max++;
+		}
+		
+	}
+
+}
