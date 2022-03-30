@@ -1,0 +1,97 @@
+import java.util.Scanner;
+
+public class Main {
+	static int n;
+	static int m;
+	static int[][] map;
+	static int[][] visit;
+	static int[] xx = {-1,0,1,0};
+	static int[] yy = {0,-1,0,1};
+	static int[][] split_visit;
+	static int total = 0;
+	
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		n = sc.nextInt();
+		m = sc.nextInt();
+		map = new int[n][m];
+		visit = new int[n][m];
+		int time =0;
+		
+		for(int i=0;i<n;i++){
+			for(int j=0;j<m;j++){
+				map[i][j] = sc.nextInt();
+				if(i>=1 && i<n-1 && j>=1 && j<m-1){
+					total++;
+				}
+			}
+		}
+		
+		while(true){
+			split_visit = new int[n][m];
+			int zero_cnt =0;
+			int split = 0;
+			for(int i=1;i<n-1;i++){
+				for(int j=1;j<m-1;j++){
+					if(map[i][j] > 0 && split_visit[i][j] == 0){
+						splitCase(i, j);
+						split++;
+					}
+					if(map[i][j] == 0){
+						zero_cnt++;
+						if(zero_cnt == total){
+							System.out.println(time);
+							return;
+						}
+					}
+				}	
+			}
+
+			if(split > 1 ){
+				System.out.println(time);
+				return;
+			}
+			
+			for(int i=1;i<n-1;i++){
+				for(int j=1;j<m-1;j++){
+					if(map[i][j] != 0){						
+						getDFS(i, j);
+					}
+				}
+			}
+			time++;
+		}
+	}
+	
+	public static void getDFS(int x, int y){
+		visit[x][y] = 1;
+
+		int water_cnt = 0;
+		for(int i=0;i<4;i++){
+			int ax = x+xx[i];
+			int ay = y+yy[i];
+			if(ax>=0 && ax<n && ay>=0 && ay<m && visit[ax][ay] == 0 && map[ax][ay] == 0){
+				water_cnt++;
+			}
+		}
+		
+		if(map[x][y] - water_cnt < 0){
+			map[x][y] = 0;
+		}else{
+			map[x][y] -= water_cnt;
+		}
+	}
+	
+	public static void splitCase(int x, int y){
+		split_visit[x][y] = 1;
+		
+		for(int i=0;i<4;i++){
+			int ax = x+xx[i];
+			int ay = y+yy[i];
+			if(ax>=0 && ax<n && ay>=0 && ay<m && map[ax][ay] != 0 && split_visit[ax][ay] == 0){
+				splitCase(ax,ay);
+			}
+		}
+	}
+}
