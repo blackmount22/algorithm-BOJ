@@ -1,0 +1,42 @@
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		int n = sc.nextInt();
+		int m = sc.nextInt(); //합을 구해야 하는 횟수 M
+	
+		int[][] nums = new int[n][n];
+		
+		for(int i=0;i<nums.length;i++){
+			for(int j=0;j<nums[0].length;j++){
+				nums[i][j] = sc.nextInt();
+			}
+		}
+		
+		int[] result = new int[m];
+		int[][] bum = new int[m][4];
+		
+		for(int i=0;i<m;i++){
+			result[i] = 0;
+			
+			for(int j=0;j<4;j++){
+				bum[i][j]=sc.nextInt();
+			}
+			
+			for(int x=bum[i][0]-1;x<=bum[i][2]-1;x++){
+				for(int y=bum[i][1]-1;y<=bum[i][3]-1;y++){
+					result[i] += nums[x][y];
+				}
+			}
+		}
+		
+		for(int i=0;i<m;i++){
+			System.out.println(result[i]);
+		}
+				
+	}
+}
