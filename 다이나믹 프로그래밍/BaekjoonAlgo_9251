@@ -1,0 +1,31 @@
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		String str = sc.nextLine();
+		String strr = sc.nextLine();
+		int[][] dp = new int[1002][1002];
+		
+		String s1 = "0"+str;
+		String s2 = "0"+strr;
+		
+		char[] ar = s1.toCharArray();
+		char[] arr = s2.toCharArray();	
+		
+		for(int i=1;i<ar.length;i++){
+			for(int j=1;j<arr.length;j++){
+				if(ar[i] == arr[j]){
+					dp[i][j] = dp[i-1][j-1]+1;
+				}else{
+					dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+				}
+			}
+		}
+		
+		System.out.println(dp[ar.length-1][arr.length-1]);
+	}
+}
