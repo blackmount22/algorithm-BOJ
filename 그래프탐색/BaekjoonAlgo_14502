@@ -1,0 +1,111 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+class VirusLocation{
+	int x;
+	int y;
+	
+	public VirusLocation(int x, int y) {
+		// TODO Auto-generated constructor stub
+		this.x = x;
+		this.y = y;
+	}
+}
+
+public class Baekjoonalgo_14502 {
+
+	static int[][] map;
+	
+	static int n;
+	static int m;
+	static int result = 0;
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		Scanner sc = new Scanner(System.in);
+		
+		n = sc.nextInt();
+		m = sc.nextInt();
+		
+		map = new int[n][m];
+		
+		for(int i=0;i<n;i++) {
+			for(int j=0;j<m;j++) {
+				map[i][j] = sc.nextInt();
+			}
+		}
+		
+		// 벽 세우기
+		SetWall(0);
+		
+		System.out.println(result);
+	}
+	
+	// DFS 벽 세우기 (꼭 3개)
+	public static void SetWall(int wallCnt) {
+		if(wallCnt == 3) {
+			SpreadVirus();
+			return;
+		}
+		
+		// 벽 세우기
+		for(int i=0;i<n;i++) {
+			for(int j=0;j<m;j++) {
+				if(map[i][j] == 0) {
+					map[i][j] = 1;
+					SetWall(wallCnt+1);
+					
+					// 다시 되돌리기
+					map[i][j] = 0;
+				}
+			}
+		}
+	}
+	
+	// BFS 바이러스 확산
+	public static void SpreadVirus() {
+		int safeCnt = 0;
+		int[] xx = {-1,0,1,0};
+		int[] yy = {0,-1,0,1};
+		
+		int[][] virusMap = new int[n][m];
+		Queue<VirusLocation> q = new LinkedList<>();
+		
+		// 바이러스 확산 맵
+		for(int i=0;i<n;i++) {
+			for(int j=0;j<m;j++) {
+				virusMap[i][j] = map[i][j];
+				if(virusMap[i][j] == 2) q.add(new VirusLocation(i, j));
+			}
+		}
+		
+		while(!q.isEmpty()) {
+			int virusX = q.peek().x;
+			int virusY = q.poll().y;
+			
+			for(int i=0;i<4;i++) {
+				int ax = virusX + xx[i];
+				int ay = virusY + yy[i];
+				
+				if(ax >=0 && ay>=0 && ax<n && ay<m && virusMap[ax][ay] == 0) {
+					virusMap[ax][ay] = 2;
+					q.add(new VirusLocation(ax, ay));
+				}
+			}
+		}
+		
+		// 안전 영역 카운트
+		for(int i=0;i<n;i++) {
+			for(int j=0;j<m;j++) {
+				if(virusMap[i][j] == 0) {
+					safeCnt++;
+				}
+			}
+		}
+		
+		result = Math.max(safeCnt, result);
+	}
+
+}
