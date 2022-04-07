@@ -1,0 +1,59 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class Main {
+
+   static int n;
+   static int[][] map;
+   static boolean[] visit;
+   static int cnt = 0;
+   static ArrayList<Integer> result = new ArrayList<Integer>();
+   
+   public static void main(String[] args) {
+      // TODO Auto-generated method stub
+      Scanner sc = new Scanner(System.in);
+      
+      n = sc.nextInt();
+      map = new int[n+1][n+1];
+      visit = new boolean[n+1];
+      
+      for(int i=1;i<=n;i++) {
+         int second_row = sc.nextInt();
+         map[i][second_row] = 1;
+      }
+      
+      for(int i=1;i<=n;i++) {
+         for(int j=1;j<=n;j++) {
+            if(map[i][j] == 1 && !visit[j]) {
+               getDFS(j,i);
+            }
+         }
+      }
+      
+      Collections.sort(result);
+      System.out.println(cnt);
+      
+      for(int i = 0;i<result.size();i++)
+      {
+    	System.out.println(result.get(i));  
+      }
+   }
+   
+   public static void getDFS(int x, int y)
+   {
+      if(x==y) {
+         result.add(x);
+         cnt++;
+      }
+      
+      visit[x] = true;
+      
+      for(int i=1;i<=n;i++) {
+         if(map[x][i] == 1 && !visit[i]) {
+            getDFS(i,y);
+         }
+         visit[i] = false;
+      }
+   }
+}
