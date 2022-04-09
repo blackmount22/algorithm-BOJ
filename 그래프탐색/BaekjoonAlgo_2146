@@ -1,0 +1,101 @@
+import java.util.Scanner;
+
+// Q)다리만들기
+// #2146
+public class Main {
+
+	static int n;
+	static int[][] land;
+	static int[][] landType;
+	static int[][] visit;
+	static int cnt=1;
+	
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		n = sc.nextInt();
+		land = new int[n][n];
+		landType = new int[n][n];
+		visit = new int[n][n];
+		int x=0;
+		int y=0;
+		
+		for(int i=0;i<n;i++){
+			for(int j=0;j<n;j++){
+				landType[i][j] = 0;
+				land[i][j] = sc.nextInt(); // 육지 : 1 // 바다 : 0 
+			}
+		}
+		
+		for(int i=0;i<n;i++){
+			for(int j=0;j<n;j++){
+				if(land[i][j]==1 && visit[i][j]==0){
+					x=i;
+					y=j;
+					int num =getLand(x, y);
+					cnt=cnt+num;
+				}
+			}
+		}
+		
+		
+		getDistance();
+		
+	}
+	
+	public static int getLand(int x, int y){
+		
+		visit[x][y] = 1;
+		landType[x][y] = cnt;
+		
+		int[] xx = {-1, 0, 1, 0};
+		int[] yy = {0, 1, 0, -1};
+		
+		for(int i=0;i<4;i++){
+			int ax = x+xx[i];
+			int ay = y+yy[i];
+			
+			if(ax>=0 && ay>=0 && ax<n && ay<n && visit[ax][ay]==0 && land[ax][ay]==1){
+				visit[ax][ay] = 1;
+				getLand(ax, ay);
+			}
+		}
+		
+		return 1;
+	}
+	
+	public static void getDistance(){
+		
+		int min=999999;
+		int check1 = 0;
+		int check2 = 0;
+		
+		for(int i=0;i<n;i++){
+			for(int j=0;j<n;j++){
+				if(landType[i][j] != 0 && landType[i][j] != check2){
+					check1=landType[i][j];
+					for(int x=0;x<n;x++){
+						for(int y=0;y<n;y++){
+							if(landType[x][y] != 0 && landType[x][y] != check1){
+								check2=landType[x][y];
+								min=getMin(Math.abs(x-i)+Math.abs(y-j) -1, min);
+								
+							}
+						}
+					}
+				}
+			}
+		}
+		System.out.println(min);
+	}
+	
+	public static int getMin(int a, int b){
+		if(a>b){
+			return b;
+		}else{
+			return a;
+		}
+	}
+	
+}
