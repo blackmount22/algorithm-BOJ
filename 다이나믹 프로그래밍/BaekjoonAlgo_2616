@@ -1,0 +1,31 @@
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		int n = sc.nextInt(); // 객차의 수
+		int[] people = new int[n+1];
+		int[] sum = new int[n+1];
+		int[][] dp = new int[4][50001];
+		
+		for(int i=1;i<=n;i++){
+			people[i] = sc.nextInt();
+			sum[i] = sum[i-1]+people[i];
+			
+		}
+		
+		int m = sc.nextInt(); // 소형기관차가 최대로 끌 수 있는 객차의 수
+		
+		for(int i=1;i<=3;i++){
+			for(int j=i*m;j<=n;j++){
+				dp[i][j] = Math.max(dp[i][j-1], sum[j]-sum[j-m]+dp[i-1][j-m]);
+			}
+		}
+		
+		System.out.println(dp[3][n]);
+		
+	}
+}
