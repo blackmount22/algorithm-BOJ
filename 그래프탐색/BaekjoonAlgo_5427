@@ -50,12 +50,12 @@ public class Baekjoon5427 {
 				for(int k=0;k<w;k++) {
 					map[k][j] = str.charAt(k);
 					
-					// »ó±ÙÀÌ À§Ä¡ ÀúÀå
+					// ìƒê·¼ì´ ìœ„ì¹˜ ì €ìž¥
 					if(map[k][j] == '@') {
 						sg.offer(new MapLocation5427(k, j));
 						visit[k][j] = 1;
 					} 
-					// ºÒ À§Ä¡ ÀúÀå
+					// ë¶ˆ ìœ„ì¹˜ ì €ìž¥
 					else if(map[k][j] == '*') {
 						f.offer(new MapLocation5427(k, j));
 					}
@@ -78,7 +78,7 @@ public class Baekjoon5427 {
 		while(!sg.isEmpty()) {
 			sec++;
 			
-			// 1ÃÊ ÈÄ, ºÒÀÇ ÀÌµ¿ ¸ÕÀú Ã³¸®
+			// 1ì´ˆ í›„, ë¶ˆì˜ ì´ë™ ë¨¼ì € ì²˜ë¦¬
 			int fireSize = f.size();
 			for(int i=0;i<fireSize;i++) {
 				int x = f.peek().x;
@@ -95,13 +95,13 @@ public class Baekjoon5427 {
 				}
 			}
 			
-			// »ó±ÙÀÌ ÀÌµ¿
+			// ìƒê·¼ì´ ì´ë™
 			int sangGeunSize = sg.size();			
 			for(int i=0;i<sangGeunSize;i++) {
 				int sangGeunX = sg.peek().x;
 				int sangGeunY = sg.poll().y;
 				
-				// »ó±ÙÀÌÀÇ À§Ä¡°¡ º®°ú ´êÀ» °æ¿ì Å»Ãâ
+				// ìƒê·¼ì´ì˜ ìœ„ì¹˜ê°€ ë²½ê³¼ ë‹¿ì„ ê²½ìš° íƒˆì¶œ
 				if(sangGeunX == 0 || sangGeunY == 0 || sangGeunX == w-1 || sangGeunY == h-1) {
 					result.add(sec);
 					return;
@@ -120,7 +120,7 @@ public class Baekjoon5427 {
 			}
 		}
 		
-		// »ó±ÙÀÌ Å»Ãâ ½ÇÆÐ 
+		// ìƒê·¼ì´ íƒˆì¶œ ì‹¤íŒ¨ 
 		result.add("IMPOSSIBLE");
 	}
 }
