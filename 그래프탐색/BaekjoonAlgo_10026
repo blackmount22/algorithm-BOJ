@@ -1,0 +1,101 @@
+import java.io.ObjectInputStream.GetField;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+
+	static int n;
+	static char[][] map;
+	static int[][] visit;
+	static int[][] visit_for_color_weakness;
+	
+	static int[] xx = {-1, 0, 1, 0};
+	static int[] yy = {0, 1, 0, -1};
+	static char current_color;
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner sc = new Scanner(System.in);
+		
+		n = sc.nextInt();
+		map = new char[n][n];
+		visit_for_color_weakness = new int[n][n];
+		visit = new int[n][n];
+		
+		int weak_color_answer = 0;
+		int color_answer = 0;
+
+		for(int i=0;i<n;i++)
+		{
+			String str = sc.next();
+			for(int j=0;j<n;j++)
+			{
+				map[i][j] = str.charAt(j);
+			}
+		}
+		
+		for(int i =0;i<n;i++) {
+			for(int j=0;j<n;j++) {
+				if(visit[i][j] == 0)
+				{
+					current_color = map[i][j];
+					GetDFS(i, j);
+					color_answer++;
+				}
+				
+				if(visit_for_color_weakness[i][j] == 0)
+				{
+					current_color = map[i][j];
+					GetColorWeaknessDFS(i, j);
+					weak_color_answer++;
+				}
+			}
+		}
+		
+		System.out.print(color_answer + " " + weak_color_answer);
+	}
+
+	// 적록색약 적용 DFS 탐색 (Red == Green)
+	public static void GetColorWeaknessDFS(int x, int y)
+	{
+		visit_for_color_weakness[x][y] = 1;
+		
+		for(int i=0;i<4;i++)
+		{
+			int mx = x + xx[i];
+			int my = y + yy[i];
+			
+			if(current_color == 'G' || current_color == 'R')
+			{
+				if(mx >= 0 && mx < n && my >= 0 && my < n && visit_for_color_weakness[mx][my] == 0 && (map[mx][my] == 'G' || map[mx][my] == 'R'))
+				{
+					GetColorWeaknessDFS(mx, my);
+				}
+			}
+			else
+			{
+				if(mx >= 0 && mx < n && my >= 0 && my < n && visit_for_color_weakness[mx][my] == 0 && map[mx][my] == 'B')
+				{
+					GetColorWeaknessDFS(mx, my);
+				}
+			}			
+		}
+	}
+	
+	// 적록색약 아닌 경우 DFS 탐색
+	public static void GetDFS(int x, int y)
+	{
+		visit[x][y] = 1;
+		
+		for(int i=0;i<4;i++)
+		{
+			int mx = x + xx[i];
+			int my = y + yy[i];
+			
+			if(mx >= 0 && mx < n && my >= 0 && my < n && visit[mx][my] == 0 && map[mx][my] == current_color)
+			{
+				GetDFS(mx, my);
+			}
+		}
+	}
+}
