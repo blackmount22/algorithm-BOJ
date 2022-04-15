@@ -1,0 +1,103 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+class Location3184{
+	int x;
+	int y;
+	
+	public Location3184(int x, int y) {
+		// TODO Auto-generated constructor stub
+		this.x = x;
+		this.y = y;
+	}
+}
+
+// Queue에 들어갈 기준점이 필요
+
+public class Main {
+
+	static int r;
+	static int c;
+	static char map[][];
+	static int visit[][];
+	static Queue<Location3184> location;
+	static int total_sheep =0;
+	static int total_wolf = 0;
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner sc = new Scanner(System.in);
+		
+		r = sc.nextInt();
+		c = sc.nextInt();
+		
+		map = new char[r][c];
+		visit = new int[r][c];
+		location = new LinkedList<>();
+		
+		for(int i=0;i<r;i++) {
+			String str = sc.next();
+			for(int j=0;j<c;j++) {
+				map[i][j] = str.charAt(j);
+			}
+		}
+		
+
+		for(int i=0;i<r;i++) {
+			for(int j=0;j<c;j++) {
+				if(map[i][j] != '#' && visit[i][j] == 0) {
+					getBFS(i, j);
+				}
+			}
+		}
+		
+		
+		System.out.println(total_sheep+" "+total_wolf); 
+	}
+	
+	public static void getBFS(int i, int j) {
+		int[] xx = {-1, 0, 1, 0};
+		int[] yy = {0, 1, 0, -1};
+		
+		int curSheep = 0;
+		int curWolf = 0;
+		visit[i][j] = 1;
+		location.offer(new Location3184(i, j));
+		
+		if(map[i][j] == 'o') {
+			curSheep++;
+		} else if(map[i][j] == 'v') {
+			curWolf++;
+		}
+		
+		while(!location.isEmpty()) {
+			int x = location.peek().x;
+			int y = location.poll().y;
+
+			for(int k=0;k<4;k++) {
+				int ax = x+xx[k];
+				int ay = y+yy[k];
+				
+				if(ax>=0 && ay>=0 && ax<r && ay<c) {
+					if(visit[ax][ay] == 0 && map[ax][ay] == 'o') {
+						curSheep++;
+					} else if( visit[ax][ay] == 0 && map[ax][ay] == 'v') {
+						curWolf++;
+					}
+					
+					if(visit[ax][ay] == 0 && map[ax][ay] != '#') {
+						location.offer(new Location3184(ax, ay));
+						visit[ax][ay] = 1;
+					}
+				}
+			}
+		}
+
+		if(curWolf>=curSheep) {
+			total_wolf += curWolf;
+		} else if(curSheep > curWolf) {
+			total_sheep += curSheep;
+		}
+	}
+}
