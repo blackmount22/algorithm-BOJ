@@ -1,0 +1,140 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+//Q)상범빌딩
+//#6593
+
+class Location{
+	
+	int f;
+	int x;
+	int y;
+	
+	public Location(int f, int x, int y) {
+		this.f = f;
+		this.x = x;
+		this.y = y;
+		// TODO Auto-generated constructor stub
+	}
+}
+
+public class Main {
+
+	static int l;
+	static int r;
+	static int c;
+	static char[][][] board;
+	static int[][][] visit;
+	static Queue<Location> q;
+	static int e_x;
+	static int e_y;
+	static int e_f;
+	static int s_x;
+	static int s_y;
+	static int s_f;
+	
+	
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		boolean flag = true;
+		
+		while(flag){
+			
+			l = sc.nextInt();
+			r = sc.nextInt();
+			c = sc.nextInt();
+			
+			if(l ==0 && r==0 && c==0){
+				flag = false;
+				return;
+			}
+			
+			board = new char[l][r][c];
+			visit = new int[l][r][c];
+			q = new LinkedList<>();
+
+			sc.nextLine();
+			
+			for(int i=0;i<l;i++){
+				for(int j=0;j<r;j++){
+					String str = sc.next();
+					for(int k=0;k<c;k++){
+						board[i][j][k] = str.charAt(k);
+					}
+				}
+				sc.nextLine();
+			}
+			
+			sc.nextLine();
+	
+			for(int i=0;i<l;i++){
+				for(int j=0;j<r;j++){
+					for(int k=0;k<c;k++){
+						if(board[i][j][k] == 'S'){
+							q.offer(new Location(i, j, k));
+							visit[i][j][k] = 1;
+						}
+						if(board[i][j][k] == 'E'){
+							e_f = i;
+							e_x = j;
+							e_y = k;
+						}
+					}
+				}
+			}
+			
+			getSearch();
+			
+			//getSearch();
+			//System.out.println(visit[e_f][e_x][e_y]-1);
+		}
+	}
+	public static void getSearch(){
+		
+		int[] x = {-1, 0, 1, 0, 0, 0};
+		int[] y = {0, 1, 0, -1, 0, 0};
+		int[] m = {0, 0, 0, 0, 1, -1};
+		int cnt =0;
+		boolean noEnd_flag = true;
+		
+		while(!q.isEmpty()){
+			
+			int size = q.size();
+			
+			for(int i=0;i<size;i++){
+				
+				s_f = q.peek().f;
+				s_x = q.peek().x;
+				s_y = q.poll().y;
+
+				if(s_f == e_f && s_x == e_x && s_y == e_y){
+					System.out.println("Escaped in "+cnt+" minute(s).");
+					noEnd_flag = false;
+					break;
+				}
+				
+				for(int j=0;j<6;j++){
+					
+					int ff = s_f+m[j];					
+					int xx = s_x+x[j];
+					int yy = s_y+y[j];
+					if(xx>=0 && yy>=0 && xx<r && yy<c && ff>=0 && ff<l){
+						if(board[ff][xx][yy] != '#' && visit[ff][xx][yy] == 0){
+							visit[ff][xx][yy] = 1;
+							q.offer(new Location(ff, xx, yy));
+						}
+					}
+				}
+				
+			}
+			cnt++;
+			
+		}
+		if(noEnd_flag){
+			System.out.println("Trapped!");
+		}
+	}
+	
+}
