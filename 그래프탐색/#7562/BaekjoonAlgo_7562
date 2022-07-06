@@ -1,0 +1,72 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+class Location7562 {
+	int x;
+	int y;
+	int cnt;
+	
+	public Location7562(int x, int y, int cnt) {
+		// TODO Auto-generated constructor stub
+		this.x = x;
+		this.y = y;
+		this.cnt = cnt;
+	}
+}
+
+public class BOJ7562 {
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		Scanner sc = new Scanner(System.in);
+		
+		int tc = sc.nextInt();
+		int[] result = new int[tc];
+		int[] xx = {-1, 1, 2, 2, 1, -1, -2, -2};
+		int[] yy = {2, 2, 1, -1, -2, -2, -1, 1};
+		
+		for(int i=0 ;i<tc;i++) {
+			int l = sc.nextInt();
+			int n = sc.nextInt();
+			int m = sc.nextInt();
+			int destinationX = sc.nextInt();
+			int destinationY = sc.nextInt();
+			
+			int[][] map = new int[l][l];
+			int[][] visit = new int[l][l];
+			Queue<Location7562> q = new LinkedList<>();
+			
+			q.offer(new Location7562(n, m, 0));
+			visit[n][m] = 1;
+			
+			while(!q.isEmpty()) {
+				int x = q.peek().x;
+				int y = q.peek().y;
+				int cnt = q.poll().cnt;
+				
+				for(int j=0;j<8;j++) {
+					int ax = x + xx[j];
+					int ay = y + yy[j];
+										
+					if(ax >= 0 && ay>= 0 && ax< l && ay< l && visit[ax][ay] == 0) {
+						if(ax == destinationX && ay == destinationY) {
+							result[i] = cnt+1;
+							q.clear();
+							break;
+						}
+						
+						visit[ax][ay] = 1;
+						q.offer(new Location7562(ax, ay, cnt+1));
+					}
+				}
+			}
+		}
+		
+		for(int i=0;i<result.length;i++) {
+			System.out.println(result[i]);
+		}
+	}
+
+}
