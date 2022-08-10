@@ -1,0 +1,60 @@
+import java.util.Scanner;
+
+class Location7569 {
+	int x;
+	int y;
+	int h;
+	
+	public Location7569(int x, int y, int h) {
+		// TODO Auto-generated constructor stub
+		this.x = x;
+		this.y = y;
+		this.h = h;
+	}
+}
+
+public class BOJ7569 {
+
+	static int m;
+	static int n;
+	static int h;
+	static int[][][] map;
+	static int[][][] visit;
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner sc = new Scanner(System.in);
+		
+		m = sc.nextInt();
+		n = sc.nextInt();
+		h = sc.nextInt();
+		
+		map = new int[m][n][h];
+		visit = new int[m][n][h];
+		
+		int startM = -1;
+		int startN = -1;
+		int startH = -1;
+		
+		for(int i=0;i<h;i++) {
+			for(int j=0;j<n;j++) {
+				for(int k=0;k<m;k++) {
+					map[k][j][i] = sc.nextInt();
+					
+					if(map[k][j][i] == 1)
+					{
+						startM = k;
+						startN = j;
+						startH = i;
+					}
+				}
+			}
+		}
+		
+		if(startM > -1 && startN > -1 && startH > -1) {
+			
+		}
+		
+	}
+
+}
