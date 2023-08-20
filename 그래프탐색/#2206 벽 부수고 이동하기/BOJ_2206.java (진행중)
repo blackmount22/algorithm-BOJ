@@ -1,0 +1,83 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+class boj2206{	
+	int x;
+	int y;
+	int breakCnt;	// 벽을 부순 개수 
+	int moveCnt;	// 움직인 수
+	
+	public boj2206(int x, int y, int breakCnt, int moveCnt) {
+		// TODO Auto-generated constructor stub
+		this.x = x;
+		this.y = y;
+		this.breakCnt = breakCnt;
+		this.moveCnt = moveCnt;
+	}
+}
+
+public class BOJ_2206 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		Scanner sc = new Scanner(System.in);
+		
+		int n = sc.nextInt();
+		int m = sc.nextInt();
+		
+		int[][] map = new int[n][m];
+		int[][] visit = new int[n][m];
+		
+		for(int i=0;i<n;i++) {			
+			String str = sc.next(); 
+			
+			for(int j=0;j<m;j++) {
+				map[i][j] = Character.getNumericValue(str.charAt(j));
+			}
+		}
+		
+		Queue<boj2206> q = new LinkedList<>();
+		
+		q.add(new boj2206(0, 0, 0, 1));
+		
+		while(q.size() > 0) {
+			int[] xx = {-1, 0, 1, 0};
+			int[] yy = {0, -1, 0, 1};
+			
+			int breakCnt = q.peek().breakCnt;
+			int moveCnt = q.peek().moveCnt;
+			int x = q.peek().x;
+			int y = q.poll().y;
+
+			if(visit[x][y] == 1) continue;
+			
+			visit[x][y] = 1;
+			
+			if(x == n-1 && y == m-1) {
+				System.out.println(moveCnt);
+				return;
+			}
+			
+			for(int i=0;i<4;i++) {
+				int ax = x + xx[i];
+				int ay = y + yy[i];
+				
+				if(ax>=0 && ay>=0 && ax<n && ay<m && visit[ax][ay] == 0 && map[ax][ay] == 0 ) {
+					q.add(new boj2206(ax, ay, breakCnt, moveCnt+1));
+				}
+				
+				if(ax >=0 && ay>=0 && ax<n && ay<m && visit[ax][ay] == 0 && map[ax][ay] == 1 ) {
+					if(breakCnt ==  0) {
+						q.add(new boj2206(ax, ay, breakCnt+1, moveCnt+1));						
+					} 
+				} 
+			}
+		}
+		
+		System.out.println(-1);
+		
+	}
+
+}
